@@ -4,17 +4,19 @@ Installing and monitoring with Checkmk free edition
 
 ## Motivation
 
-I recently discovered [checkmk](https://checkmk.com/download) by 2 cool Computer Scientists (they do everything and anything on computers, networking, administration, full stack development and many more) with very good and broad IT knowledge. I usually use [Zabbix](https://www.zabbix.com), [Icinga](https://icinga.com), [Nagios](https://www.nagios.org) etc, which I have worked on in the past, BTW are really awesome tools and I still use some of them today. So, since I saw checkmk I can't take my eyes off it, I want to be all around it and get in depth with this amazing monitoring tool. Let's have some fun!
+I recently discovered [checkmk](https://checkmk.com/download) by 2 cool Computer Scientists (they do everything and anything on computers, networking, administration, full stack development and many more) with very good and broad IT knowledge. I usually use [Zabbix](https://www.zabbix.com), [Icinga](https://icinga.com), [Nagios](https://www.nagios.org) etc, which I have worked on in the past, BTW are really awesome tools and I still use some of them today. So, since I saw [checkmk](https://checkmk.com/download) I can't take my eyes off it, I want to be all around it and get in depth with this amazing [open source](https://github.com/tribe29/checkmk/) monitoring tool. Let's have some fun and break the installation process into detailed pieces!
+
+PS. I will also provide some custom tracking/monitoring features with Shell Scripts and Python! They are coming soon in a second phase.
 
 ![Screenshot](./misc/screenshots/checkmk_dashboard.png)
 
 ## VM installation
 
-Follow the [Vagrant](https://github.com/ncklinux/vagrant-ubuntu64) project of mine to spin up a new Ubuntu VM or use a ready-made [Vagrant Box](https://app.vagrantup.com/boxes/search) for convenience. Alternatively, you can use [Docker](https://github.com/ncklinux/docker-lemp) if you prefer (which I use daily). Also, you can choose [VirtualBox](https://www.virtualbox.org/wiki/Downloads) and install [Ubuntu](https://ubuntu.com/download/server), [Debian](https://www.debian.org/download), [SLES](https://www.suse.com/products/server/) or [RedHat/CentOS](https://www.centos.org) or just any free/paid VM hosting, that actually can give you a virtual machine with those distributions, and of course with command line access.
+Follow the [Vagrant](https://github.com/ncklinux/vagrant-ubuntu64) project of mine to spin up a new Ubuntu VM or use a ready-made [Vagrant Box](https://app.vagrantup.com/boxes/search) for convenience. Alternatively, you can use [Docker](https://github.com/ncklinux/docker-lemp) if you prefer (which I use daily). Also, you can choose [VirtualBox](https://www.virtualbox.org/wiki/Downloads) (Vagrant actually does) and install [Ubuntu](https://ubuntu.com/download/server), [Debian](https://www.debian.org/download), [SLES](https://www.suse.com/products/server/) or [RedHat/CentOS](https://www.centos.org) or just any free/paid VM hosting, that actually can give you a virtual machine with those distributions, and of course with command line access.
 
 ## Ubuntu CLI
 
-So suppose you choose [Vagrant](https://github.com/ncklinux/vagrant-ubuntu64), then download and [install](https://docs.checkmk.com/latest/en/install_packages_debian.html) [checkmk](https://checkmk.com/download).
+So, suppose you choose [Vagrant](https://github.com/ncklinux/vagrant-ubuntu64), then [download](https://checkmk.com/download) and install checkmk (there's also an [official installation guide](https://docs.checkmk.com/latest/en/install_packages_debian.html)).
 
 ```bash
 # Spin your VM
