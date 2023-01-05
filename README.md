@@ -6,7 +6,7 @@ Installing and monitoring with Checkmk free edition
 
 I recently discovered [checkmk](https://checkmk.com/download) by 2 cool Computer Scientists (they do everything and anything on computers, networking, administration, full stack development and many more) with very good and broad IT knowledge. I usually use [Zabbix](https://www.zabbix.com), [Icinga](https://icinga.com), [Nagios](https://www.nagios.org) etc, which I have worked on in the past, BTW are really awesome tools and I still use some of them today. So, since I saw [checkmk](https://checkmk.com/download) I can't take my eyes off it, I want to be all around it and get in depth with this amazing [open source](https://github.com/tribe29/checkmk/) monitoring tool. Let's have some fun and break the installation process into detailed pieces!
 
-PS. I will also provide some custom tracking/monitoring features with Shell Scripts and Python! They are coming soon in a second phase.
+PS. I will also provide some custom monitoring features with Shell Scripts and Python! They are coming soon in a second phase.
 
 ![Screenshot](./misc/screenshots/checkmk_dashboard.png)
 
@@ -36,22 +36,22 @@ $ sudo lsb_release -a
 $ cd /tmp
 $ wget https://download.checkmk.com/checkmk/2.1.0p18/check-mk-free-2.1.0p18_0.jammy_amd64.deb # Again, use your version here from https://checkmk.com/download
 
-# Check your disk space (will take 1.5GB more or less)
+# Disk space check (will take 1.5GB more or less)
 $ df -h
 
 # Install the package and it's dependencies, the version in my case is as follows:
 $ sudo apt install ./check-mk-free-2.1.0p18_0.jammy_amd64.deb -y
 
-# Have fun with OMD ;) The Open Monitoring Distribution https://docs.checkmk.com/latest/en/omd_basics.html
+# OMD ;) The Open Monitoring Distribution https://docs.checkmk.com/latest/en/omd_basics.html
 $ omd version # Should print out something like "OMD - Open Monitoring Distribution Version 2.1.0p18.cfe" with the actual version (2.1.0p18) I've used in this case
 
 # Let's see first what it did on our system (i'm curious..)
-$ sudo systemctl list-units | grep "check\|omd" # Hmm, interesting.. there are just some services :)
+$ sudo systemctl list-units | grep "check\|omd" # Just some services..
 $ netstat -tupln # Runs with Apache on port 5000
 $ which omd # The binary..
-$ ls -ls /opt/omd/ # Here are Apache, possible sites/instances (I guess) and versions..
-$ ls -ls / # Aha, there's also a symlink :D
+$ ls -ls / # A symlink..
 # lrwxrwxrwx 1 root root 8 Jan 4 19:58 omd -> /opt/omd
+$ ls -ls /opt/omd/ # Here are Apache, possible sites (instances I guess) and versions..
 # OK, very nice!
 
 #Let's create our first monitoring site now, the instance (and you can have of multiple of them)
@@ -110,7 +110,7 @@ $ omd sites
 # SITE             VERSION          COMMENTS
 # mymonitoring     2.1.0p18.cfe     default version
 
-# There is also a man page ;)
+# Man page ;)
 man omd
 # OMD(8) System Manager's Manual OMD(8)
 #
@@ -139,8 +139,8 @@ man omd
 
 In case of reboot `omd` will start automatically.
 
-Then define an IP in [Vagrant](https://developer.hashicorp.com/vagrant/docs/networking/private_network) file e.g. `config.vm.network "private_network", ip: "192.168.57.10"`, re-spin your box (reboot), in the meantime it's nice to know more about checkmk's ports which are in the [official docs](https://docs.checkmk.com/latest/en/ports.html).  
-Visit your monitoring site at `http://192.168.57.10/mymonitoring/` which will produce a url like `http://192.168.57.10/mymonitoring/check_mk/login.py?_origtarget=index.py`. The default username is `cmkadmin` and you can find your password in the `omd create mymonitoring` output of the example that we did above.
+Then define an IP in [Vagrant](https://developer.hashicorp.com/vagrant/docs/networking/private_network) file e.g. `config.vm.network "private_network", ip: "192.168.57.10"`, reboot your box, and in the meantime it's nice to know more about checkmk's [ports](https://docs.checkmk.com/latest/en/ports.html).  
+Visit the monitoring front-end at [http://192.168.57.10/mymonitoring/](http://192.168.57.10/mymonitoring/). The default username is `cmkadmin` and the password is in the `omd create mymonitoring` output of the example that we did above.
 ![Screenshot](./misc/screenshots/checkmk_login.png)
 
 ## License
@@ -169,4 +169,4 @@ This repository follows the [Conventional Commits](https://www.conventionalcommi
 
 ## Powered by
 
-<img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/unix/unix-original.svg" /><img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" /><img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" /><img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ssh/ssh-original-wordmark.svg" /><img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vagrant/vagrant-original.svg" /><img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" /><img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg" /><img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" /><img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-plain-wordmark.svg" />
+<img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/unix/unix-original.svg" /><img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" /><img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" /><img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ssh/ssh-original-wordmark.svg" /><img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vagrant/vagrant-original.svg" /><img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" /><img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg" /><img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apache/apache-original-wordmark.svg" /><img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" /><img height="33" style="margin-right: 3px;" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-plain-wordmark.svg" />
