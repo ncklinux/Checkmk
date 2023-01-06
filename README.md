@@ -166,12 +166,13 @@ $ sudo systemctl list-units | grep "check\|omd"
 
 In order to add the VM to the monitoring system do the following:
 
-1. Click on "Hosts->Add Host" and add your hostname (to find your FQDN use `hostname -f`)
+1. Click on "Setup->Hosts->Add Host" and add your hostname (to find your FQDN use `hostname -f`)
 2. Add the IP address `192.168.57.10` (the IP can be optional if you used your real FQDN)
-3. Click on "Save & go to service configuration" and after a few seconds you should start receiving data
-4. Those data are all discovered services etc and by using the + or - buttons you can choose which ones to monitor, click "Accept all"
-5. At the top right you can see your "changes", these changes are not applied automatically, you have to apply them manually, click on "Activate on selected sites"
-6. That's all, then you can check everything from the "Overview" panel, click on the "Hosts" (on number 1) and a table with the status of the VM will appear
+3. Click on "Save & go to service configuration" and you should start receiving all discovered services
+4. Use the + or - buttons to choose which ones to monitor or click "Accept all"
+5. At the top right you can see your "changes", which you have to apply manually, click on "Activate on selected sites"
+
+That's all, then you can check everything from the "Overview" panel, click on the "Hosts" (on number 1) and a table with the status of the VM will appear.
 
 ![Screenshot](./misc/screenshots/checkmk_new_host.png)
 
