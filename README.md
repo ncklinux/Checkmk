@@ -8,7 +8,7 @@ I recently discovered [checkmk](https://checkmk.com) by two cool Computer Scient
 
 I will also provide some custom monitoring features with Shell Scripts and Python! They are coming soon in a second phase.
 
-![Screenshot](./misc/screenshots/checkmk_dashboard.png)
+![Screenshot](./misc/screenshots/checkmk_dashboard_20230106.png)
 
 ## VM installation
 
