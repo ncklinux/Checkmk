@@ -171,7 +171,9 @@ In order to add the VM to the monitoring system do the following:
 3. Click on "Save & go to service configuration" and after a few seconds you should start receiving data
 4. Those data are all discovered services etc and by using the + or - buttons you can choose which ones to monitor, click "Accept all"
 5. At the top right you can see your "changes", these changes are not applied automatically, you have to apply them manually, click on "Activate on selected sites"
-6. That's all, then you can check everything from the "Overview" panel, click on the "Hosts" (number 1) and a table with the status of the VM will appear (in rows)
+6. That's all, then you can check everything from the "Overview" panel, click on the "Hosts" (on number 1) and a table with the status of the VM will appear
+
+![Screenshot](./misc/screenshots/checkmk_new_host.png)
 
 ## License
 
