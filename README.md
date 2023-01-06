@@ -4,9 +4,9 @@ Installing and monitoring with Checkmk free edition
 
 ## Motivation
 
-I recently discovered [checkmk](https://checkmk.com) by two cool Computer Scientists (they do everything and anything on computers, networking, administration, full stack development and many more) with excellent and broad knowledge. I usually use [Zabbix](https://www.zabbix.com), [Icinga](https://icinga.com), [Nagios](https://www.nagios.org) etc, which I have worked on in the past, BTW are really great tools and I still use some of them today. So, since I saw [checkmk](https://checkmk.com) I can't take my eyes off it, I want to be all around it and get in depth with this amazing [open source](https://github.com/tribe29/checkmk/) monitoring tool (give them a :star: on GitHub). Let's have some fun and break the installation process into detailed pieces!
+I recently discovered [checkmk](https://checkmk.com) by two cool Computer Scientists with excellent and broad knowledge. I usually use [Zabbix](https://www.zabbix.com), [Icinga](https://icinga.com), [Nagios](https://www.nagios.org) etc, which I have worked on in the past, BTW are really great tools and I still use some of them today. So, since I saw [checkmk](https://checkmk.com) I can't take my eyes off it, I want to be all around it and get in depth with this amazing open source monitoring tool (give them a :star: on [GitHub](https://github.com/tribe29/checkmk/)). Let's have some fun and break the installation process into detailed pieces!
 
-PS. I will also provide some custom monitoring features with Shell Scripts and Python! They are coming soon in a second phase.
+I will also provide some custom monitoring features with Shell Scripts and Python! They are coming soon in a second phase.
 
 ![Screenshot](./misc/screenshots/checkmk_dashboard.png)
 
@@ -70,7 +70,7 @@ $ omd create mymonitoring # You can replace mymonitoring your own name and shoul
 #   The site can be started with omd start mymonitoring.
 #   The default web UI is available at http://vagrant/mymonitoring/
 #
-#   The admin user for the web applications is cmkadmin with password: YOUR_PASSWORD_COMES_HERE
+#   The admin user for the web applications is cmkadmin with password: YOUR_PASSWORD_WILL_APPEAR_HERE
 #   For command line administration of the site, log in with 'omd su mymonitoring'.
 #   After logging in, you can change the password for cmkadmin with 'cmk-passwd cmkadmin'.
 
@@ -137,10 +137,13 @@ man omd
 # ...
 ```
 
-In case of reboot `omd` will start automatically (but it's always good to check the status `omd status mymonitoring`).
+Then specify a static IP address in [Vagrant](https://developer.hashicorp.com/vagrant/docs/networking/private_network) file e.g. `config.vm.network "private_network", ip: "192.168.57.10"` and reboot, make sure that the IP does not collide with any other machines on the same network (use [nmap](https://wiki.archlinux.org/title/nmap) or [Angry IP Scanner](https://angryip.org) for that).
 
-Then specify a static IP address in [Vagrant](https://developer.hashicorp.com/vagrant/docs/networking/private_network) file e.g. `config.vm.network "private_network", ip: "192.168.57.10"` and reboot, make sure that the IP does not collide with any other machines on the same network (use [nmap](https://wiki.archlinux.org/title/nmap) or [Angry IP Scanner](https://angryip.org) for that). In the meantime it's nice to know more about checkmk's [ports](https://docs.checkmk.com/latest/en/ports.html).  
-Visit the monitoring front-end at [http://192.168.57.10/mymonitoring/](http://192.168.57.10/mymonitoring/) and login (the default username is `cmkadmin` and the password is in the `omd create mymonitoring` output of the example above).
+On reboot `omd` will start automatically but it's always good to check the status `omd status mymonitoring`.
+
+In the meantime it's nice to know more about checkmk's [ports](https://docs.checkmk.com/latest/en/ports.html).
+
+Visit the monitoring UI at [http://192.168.57.10/mymonitoring/](http://192.168.57.10/mymonitoring/) and login (the default username is `cmkadmin` and the password is in the `omd create mymonitoring` output of the example above).
 
 ![Screenshot](./misc/screenshots/checkmk_login.png)
 
