@@ -147,6 +147,32 @@ Visit the monitoring UI at [http://192.168.57.10/mymonitoring/](http://192.168.5
 
 ![Screenshot](./misc/screenshots/checkmk_login.png)
 
+## checkmk UI
+
+The first thing to do is to monitor the VM itself, navigate to "Setup->Agents(Windows, Linux, Solaris, AIX)" and select the Ubuntu agent `check-mk-agent_2.1.0p18-2ec94b9ec2f2a91a_all.deb` (your file may differ in the version), copy the agent to Vagrant VM:
+
+```bash
+$ vagrant plugin install vagrant-sc
+$ vagrant scp /home/YOUR_USER/Downloads/check-mk-agent_2.1.0p18-2ec94b9ec2f2a91a_all.deb :~/.
+$ vagrant ssh
+$ sudo apt install ./check-mk-agent_2.1.0p18-2ec94b9ec2f2a91a_all.deb
+$ sudo systemctl list-units | grep "check\|omd"
+# opt-omd-sites-mymonitoring-tmp.mount   loaded active mounted   /opt/omd/sites/mymonitoring/tmp
+# check-mk-agent-async.service           loaded active running   Checkmk agent - Asynchronous background tasks
+# check-mk-free-2.1.0p18.service         loaded active exited    LSB: OMD sites
+# omd.service                            loaded active exited    Checkmk Monitoring
+# check-mk-agent.socket                  loaded active listening Local Checkmk agent socket
+```
+
+In order to add the VM to the monitoring system do the following:
+
+1. Click on "Hosts->Add Host" and add your hostname (to find your FQDN use `hostname -f`)
+2. Add the IP address `192.168.57.10` (the IP can be optional if you used your real FQDN)
+3. Click on "Save & go to service configuration" and after a few seconds you should start receiving data
+4. Those data are all discovered services etc and by using the + or - buttons you can choose which ones to monitor, click "Accept all"
+5. At the top right you can see your "changes", these changes are not applied automatically, you have to apply them manually, click on "Activate on selected sites"
+6. That's all, then you can check everything from the "Overview" panel, click on the "Hosts" (number 1) and a table with the status of the VM will appear (in rows)
+
 ## License
 
 MIT
