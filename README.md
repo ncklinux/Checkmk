@@ -153,7 +153,7 @@ man omd
 # ...
 ```
 
-Then specify a static IP address in [Vagrant](https://developer.hashicorp.com/vagrant/docs/networking/private_network) file e.g. `config.vm.network "private_network", ip: "192.168.57.10"` and reboot, make sure that the IP does not collide with any other machines on the same network (use [nmap](https://wiki.archlinux.org/title/nmap) or [Angry IP Scanner](https://angryip.org) for that).
+Make sure that IPs do not collide with other machines on the same network, use [nmap](https://wiki.archlinux.org/title/nmap) or [Angry IP Scanner](https://angryip.org) for that.
 
 On reboot `omd` will start automatically but it's always good to check the status `omd status mymonitoring`.
 
