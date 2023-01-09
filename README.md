@@ -172,7 +172,7 @@ In order to add the VM to the monitoring system do the following:
 4. Use the + or - buttons to choose which ones to monitor or click "Accept all"
 5. At the top right you can see your "changes", which you have to apply manually, click on "Activate on selected sites"
 
-That's all, then you can check everything from the "Overview" panel, click on the "Hosts" (on number 1) and a table with the status of the VM will appear.
+That's all, then you can check everything from the "Overview" panel, click on the "Hosts" (on number 1) and a table with the status of the VM will appear. For additional VMs, repeat the same steps from 1-5, copy and install the agent and on the previous VM (the one with checkmk installed), simply add the host.
 
 ![Screenshot](./misc/screenshots/checkmk_new_host.png)
 
