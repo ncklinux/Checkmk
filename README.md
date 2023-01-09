@@ -20,14 +20,30 @@ So, suppose you choose Vagrant, then [download](https://checkmk.com/download) an
 
 ```bash
 # Spin your VM
-$ cd YOUR_VAGRANT_BOX
-$ vagrant up
-$ vagrant ssh
+$ git clone git@github.com:ncklinux/Checkmk.git
+$ cd Checkmk
 
-# Some maintenance work
-$ sudo apt update && sudo apt upgrade -y
-$ sudo apt autoremove -y
-$ sudo apt clean
+# Manage multiple VMs
+$ vagrant up
+$ vagrant global-status
+# id       name    provider   state    directory
+# -------------------------------------------------------------------
+# mpc777i  master  virtualbox running  /home/YOUR_USER/Checkmk
+# mpc778i  node    virtualbox running  /home/YOUR_USER/Checkmk
+
+# The above shows information about all known Vagrant environments
+# on this machine. This data is cached and may not be completely
+# up-to-date (use "vagrant global-status --prune" to prune invalid
+# entries). To interact with any of the machines, you can go to that
+# directory and run Vagrant, or you can use the ID directly with
+# Vagrant commands from any directory. For example:
+# "vagrant destroy mpc777i"
+
+# SSH to the master VM (by using the name)
+$ vagrant ssh master # or vagrant ssh node
+
+# If for any reason you need to shutdown use: vagrant halt master
+# or without name for all VMs: vagrant halt
 
 # Find out which release of Ubuntu you are using to download the correct free version of checkmk for your system https://checkmk.com/download
 $ sudo lsb_release -a
@@ -149,12 +165,15 @@ Visit the monitoring UI at [http://192.168.57.10/mymonitoring/](http://192.168.5
 
 ## checkmk UI
 
-The first thing to do is to monitor the VM itself, navigate to "Setup->Agents(Windows, Linux, Solaris, AIX)" and select the Ubuntu agent `check-mk-agent_2.1.0p18-2ec94b9ec2f2a91a_all.deb` (your file may differ in the version), copy the agent to Vagrant VM:
+The first thing to do is to monitor the master VM itself, navigate to "Setup->Agents(Windows, Linux, Solaris, AIX)" and select the Ubuntu agent `check-mk-agent_2.1.0p18-2ec94b9ec2f2a91a_all.deb` (your file may differ in the version), copy the agent to Vagrant VM:
 
 ```bash
-$ vagrant plugin install vagrant-sc
-$ vagrant scp /home/YOUR_USER/Downloads/check-mk-agent_2.1.0p18-2ec94b9ec2f2a91a_all.deb :~/.
-$ vagrant ssh
+$ vagrant plugin install vagrant-scp
+
+# replace [vm_name] with master or node
+$ vagrant scp /home/YOUR_USER/Downloads/check-mk-agent_2.1.0p18-2ec94b9ec2f2a91a_all.deb [vm_name]:~/.
+
+$ vagrant ssh master
 $ sudo apt install ./check-mk-agent_2.1.0p18-2ec94b9ec2f2a91a_all.deb
 $ sudo systemctl list-units | grep "check\|omd"
 # opt-omd-sites-mymonitoring-tmp.mount   loaded active mounted   /opt/omd/sites/mymonitoring/tmp
@@ -174,41 +193,9 @@ In order to add the VM to the monitoring system do the following:
 
 That's all, then you can check everything from the "Overview" panel, click on the "Hosts" (on number 1) and a table with the status of the VM will appear.
 
-For additional VMs, repeat the same steps from 1-5, copy and install the agent and on the previous VM (the one with checkmk installed), simply add the host.
+For additional VMs (e.g. node), copy and install the agent. On the master VM (with checkmk installed), repeat the same steps from 1-5, simply add through the UI the new host.
 
 ![Screenshot](./misc/screenshots/checkmk_new_host.png)
-
-## Vagrant
-
-Use the following commands to manage multiple VMs
-
-```bash
-$ vagrant up
-$ vagrant global-status
-# id       name    provider   state    directory
-# -------------------------------------------------------------------
-# mpc777i  master  virtualbox running  /home/YOUR_USER/Checkmk
-# mpc778i  node    virtualbox running  /home/YOUR_USER/Checkmk
-
-# The above shows information about all known Vagrant environments
-# on this machine. This data is cached and may not be completely
-# up-to-date (use "vagrant global-status --prune" to prune invalid
-# entries). To interact with any of the machines, you can go to that
-# directory and run Vagrant, or you can use the ID directly with
-# Vagrant commands from any directory. For example:
-# "vagrant destroy mpc777i"
-
-# SSH to the master VM (by using the name)
-$ vagrant ssh master
-
-# SSH to the node VM
-$ vagrant ssh node
-
-# Shutdown both VMs
-$ vagrant halt
-# ==> node: Attempting graceful shutdown of VM...
-# ==> master: Attempting graceful shutdown of VM...
-```
 
 ## License
 

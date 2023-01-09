@@ -5,7 +5,7 @@
 Vagrant.configure("2") do |config|
 
     # Common configuration
-    config.vm.box = "vagrant-ubuntu64"
+    config.vm.box = "vagrant-ubuntu64" # Or use another box from https://app.vagrantup.com/boxes/search
     config.vm.provision :shell, inline: <<-SHELL
         apt update
         apt -y upgrade
