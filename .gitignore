@@ -9,3 +9,6 @@
 
 # VSCode
 .vscode
+
+# Vagrant
+.vagrant
