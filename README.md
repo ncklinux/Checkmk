@@ -61,14 +61,14 @@ $ sudo apt install ./check-mk-free-2.1.0p18_0.jammy_amd64.deb -y
 # OMD ;) The Open Monitoring Distribution https://docs.checkmk.com/latest/en/omd_basics.html
 $ omd version # Should print out something like "OMD - Open Monitoring Distribution Version 2.1.0p18.cfe" with the actual version (2.1.0p18) I've used in this case
 
-# Let's see first what it did on our system (i'm curious..)
-$ sudo systemctl list-units | grep "check\|omd" # Just some services..
-$ netstat -tupln # Runs with Apache on port 5000
-$ which omd # The binary..
-$ ls -ls / # A symlink..
+# Let's see first what it did on our system
+$ sudo systemctl list-units | grep "check\|omd" # One service at the moment
+# check-mk-free-2.1.0p18.service   loaded active exited   LSB: OMD sites
+$ sudo netstat -tupln # Nothing at the moment
+$ which omd # The binary
+$ ls -ls / # A symlink
 # lrwxrwxrwx 1 root root 8 Jan 4 19:58 omd -> /opt/omd
-$ ls -ls /opt/omd/ # Here are Apache, possible sites (instances I guess) and versions..
-# OK, very nice!
+$ ls -ls /opt/omd/ # Here are Apache, sites (instances I guess) and versions
 
 #Let's create our first monitoring site now, the instance (and you can have of multiple of them)
 $ omd create mymonitoring # You can replace mymonitoring your own name and should print something like the following:
@@ -89,6 +89,10 @@ $ omd create mymonitoring # You can replace mymonitoring your own name and shoul
 #   The admin user for the web applications is cmkadmin with password: YOUR_PASSWORD_WILL_APPEAR_HERE
 #   For command line administration of the site, log in with 'omd su mymonitoring'.
 #   After logging in, you can change the password for cmkadmin with 'cmk-passwd cmkadmin'.
+
+$ sudo systemctl list-units | grep "check\|omd" # Two running services
+# opt-omd-sites-mymonitoring-tmp.mount   loaded active mounted   /opt/omd/sites/mymonitoring/tmp
+# check-mk-free-2.1.0p18.service         loaded active exited    LSB: OMD sites
 
 $ omd start mymonitoring # It will produce the following output:
 # Temporary filesystem already mounted
@@ -170,10 +174,11 @@ The first thing to do is to monitor the master VM itself, navigate to "Setup->Ag
 ```bash
 $ vagrant plugin install vagrant-scp
 
-# replace [vm_name] with master or node
-$ vagrant scp /home/YOUR_USER/Downloads/check-mk-agent_2.1.0p18-2ec94b9ec2f2a91a_all.deb [vm_name]:~/.
+# Copy the downloaded agent
+$ vagrant scp /home/YOUR_USER/Downloads/check-mk-agent_2.1.0p18-2ec94b9ec2f2a91a_all.deb master:/tmp
 
 $ vagrant ssh master
+$ cd /tmp
 $ sudo apt install ./check-mk-agent_2.1.0p18-2ec94b9ec2f2a91a_all.deb
 $ sudo systemctl list-units | grep "check\|omd"
 # opt-omd-sites-mymonitoring-tmp.mount   loaded active mounted   /opt/omd/sites/mymonitoring/tmp
@@ -185,15 +190,15 @@ $ sudo systemctl list-units | grep "check\|omd"
 
 In order to add the VM to the monitoring system do the following:
 
-1. Click on "Setup->Hosts->Add Host" and add your hostname (to find your FQDN use `hostname -f`)
-2. Add the IP address `192.168.57.10` (the IP can be optional if you used your real FQDN)
+1. Click on "Setup->Hosts->Add Host" and add the hostname `master` (to find the FQDN use `hostname -f`)
+2. Add the IP address `192.168.57.10` (the IP can be optional if you used your real unique FQDN)
 3. Click on "Save & go to service configuration" and you should start receiving all discovered services
 4. Use the + or - buttons to choose which ones to monitor or click "Accept all"
 5. At the top right you can see your "changes", which you have to apply manually, click on "Activate on selected sites"
 
 That's all, then you can check everything from the "Overview" panel, click on the "Hosts" (on number 1) and a table with the status of the VM will appear.
 
-For additional VMs (e.g. node), copy and install the agent. On the master VM (with checkmk installed), repeat the same steps from 1-5, simply add through the UI the new host.
+For additional VMs (e.g. node), copy and install the agent `vagrant scp /home/YOUR_USER/Downloads/check-mk-agent_2.1.0p18-2ec94b9ec2f2a91a_all.deb node:/tmp`. On the master VM (with checkmk installed), repeat the same steps from 1-5, simply add through the UI the new host.
 
 ![Screenshot](./misc/screenshots/checkmk_new_host.png)
 
