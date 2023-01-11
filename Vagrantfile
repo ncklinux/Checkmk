@@ -5,7 +5,7 @@
 Vagrant.configure("2") do |config|
 
     # Common configuration
-    config.vm.box = "vagrant-ubuntu64" # Or use another box from https://app.vagrantup.com/boxes/search
+    config.vm.box = "vagrant-ubuntu64" # Follow this repo to build the box https://github.com/ncklinux/vagrant-ubuntu64 or use pre-built boxes https://app.vagrantup.com/boxes/search
     config.vm.provision :shell, inline: <<-SHELL
         apt update
         apt -y upgrade
