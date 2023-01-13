@@ -205,7 +205,7 @@ For additional VMs (e.g. node), copy and install the agent `vagrant scp /home/YO
 
 ## Update checkmk
 
-Downloading and installing the [newest](https://checkmk.com/product/latest-version) version of checkmk does not mean that your site is using the latest version (not if you restart the services and not even after the reboot), this happens for an important reason, it allows you to use multiple versions running in [parallel](https://docs.checkmk.com/latest/en/update.html) :wink:
+Downloading and installing the [newest](https://checkmk.com/product/latest-version) version of checkmk does not mean that your site is using the latest version (not if you restart the services and not even after reboot), this happens for an important reason, it allows you to use multiple versions running in [parallel](https://docs.checkmk.com/latest/en/update.html) :wink:
 
 ```bash
 $ vagrant up master
