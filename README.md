@@ -64,7 +64,7 @@ $ omd version # Should print out something like "OMD - Open Monitoring Distribut
 # Let's see first what it did on our system
 $ sudo systemctl list-units | grep "check\|omd" # One service at the moment
 # check-mk-free-2.1.0p18.service   loaded active exited   LSB: OMD sites
-$ sudo netstat -tupln # Nothing at the moment
+$ sudo netstat -tupln # Nothing yet
 $ which omd # The binary
 $ ls -ls / # A symlink
 # lrwxrwxrwx 1 root root 8 Jan 4 19:58 omd -> /opt/omd
@@ -169,9 +169,10 @@ Visit the monitoring UI at [http://192.168.57.10/mymonitoring/](http://192.168.5
 
 ## checkmk UI
 
-The first thing to do is to monitor the master VM itself, navigate to "Setup->Agents(Windows, Linux, Solaris, AIX)" and select the Ubuntu agent `check-mk-agent_2.1.0p18-2ec94b9ec2f2a91a_all.deb` (your file may differ in the version), copy the agent to Vagrant VM:
+The first thing to do is to monitor the master VM itself, navigate to "Setup->Agents(Windows, Linux, Solaris, AIX)" and select/download the Ubuntu agent `check-mk-agent_2.1.0p18-2ec94b9ec2f2a91a_all.deb` (your file may differ in the version), then copy the agent to the VM:
 
 ```bash
+# Install vagrant-scp plugin
 $ vagrant plugin install vagrant-scp
 
 # Copy the downloaded agent
@@ -201,6 +202,36 @@ That's all, then you can check everything from the "Overview" panel, click on th
 For additional VMs (e.g. node), copy and install the agent `vagrant scp /home/YOUR_USER/Downloads/check-mk-agent_2.1.0p18-2ec94b9ec2f2a91a_all.deb node:/tmp`. On the master VM (with checkmk installed), repeat the same steps from 1-5, simply add through the UI the new host.
 
 ![Screenshot](./misc/screenshots/checkmk_new_host.png)
+
+## Update checkmk
+
+Downloading and installing the [newest](https://checkmk.com/product/latest-version) version of checkmk does not mean that your site is using the latest version (not if you restart the services and not even after the reboot), this happens for an important reason, it allows you to use multiple versions running in [parallel](https://docs.checkmk.com/latest/en/update.html) :wink:
+
+```bash
+$ vagrant up master
+$ vagrant ssh master
+$ $ cd /tmp
+$ wget https://download.checkmk.com/checkmk/2.1.0p18/check-mk-free-2.1.0p18_0.jammy_amd64.deb # Let's assume that this is the latest version
+$ sudo apt install ./check-mk-free-2.1.0p18_0.jammy_amd64.deb -y
+$ omd version # Show version
+$ omd versions # Show all versions (the character p in the version stands for patch)
+$ omd sites # To see which version each site is using
+$ omd status mymonitoring
+$ omd stop mymonitoring
+$ omd update mymonitoring
+$ omd start mymonitoring
+```
+
+Run multiple versions in parallel! This is actually very useful if you want to run tests without affecting the monitoring UI currently used by other people, e.g. to test the latest version or other sites etc. What's the beauty? You don't need a new VM to do it :relieved:
+
+```bash
+$ omd create anothermonitoring
+$ omd su anothermonitoring
+$ htpasswd etc/htpasswd cmkadmin # change the password
+$ omd start anothermonitoring
+```
+
+Visit the new monitoring UI at [http://192.168.57.10/anothermonitoring/](http://192.168.57.10/anothermonitoring/)
 
 ## License
 
