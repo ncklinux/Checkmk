@@ -241,7 +241,7 @@ $ cd Checkmk
 $ vagrant up master
 $ vagrant scp plugins/ping.py master:/usr/lib/check_mk_agent/plugins
 $ vagrant ssh master
-$ chmod +x /usr/lib/check_mk_agent/plugins/ping.py
+$ sudo chmod +x /usr/lib/check_mk_agent/plugins/ping.py
 $ sudo omd su mymonitoring
 $ cd /usr/lib/check_mk_agent/plugins/ && ls -la
 $ ./ping.py
