@@ -6,8 +6,6 @@ Installing and monitoring with Checkmk free edition
 
 I recently discovered [checkmk](https://checkmk.com) by two cool Computer Scientists with excellent and broad knowledge. I usually use [Zabbix](https://www.zabbix.com), [Icinga](https://icinga.com), [Nagios](https://www.nagios.org) etc, which I have worked on in the past, BTW are really great tools and I still use some of them today. So, since I saw [checkmk](https://checkmk.com) I can't take my eyes off it, I want to be all around it and get in depth with this amazing open source monitoring tool (give them a :star: on [GitHub](https://github.com/tribe29/checkmk/)). Let's have some fun and break the installation process into detailed pieces!
 
-I will also provide some custom monitoring features with Shell Scripts and Python! They are coming soon in a second phase.
-
 ![Screenshot](./misc/screenshots/checkmk_dashboard_20230106.png)
 
 ## VM installation
@@ -232,6 +230,32 @@ $ omd start anothermonitoring
 ```
 
 Visit the new monitoring UI at [http://192.168.57.10/anothermonitoring/](http://192.168.57.10/anothermonitoring/)
+
+## Plugins
+
+Checkmk offers many ready-made plugins (2000 more or less) for most hardware and software. You can find them on [Checkmk Exchange](https://exchange.checkmk.com/), where there are even more plugins contributed by users.
+
+```bash
+$ git clone git@github.com:ncklinux/Checkmk.git
+$ cd Checkmk
+$ vagrant up master
+$ vagrant scp plugins/ping.py master:/usr/lib/check_mk_agent/plugins
+$ vagrant ssh master
+$ chmod +x /usr/lib/check_mk_agent/plugins/ping.py
+$ cd /usr/lib/check_mk_agent/plugins
+$ ./ping.py
+# OMD[mymonitoring]:/usr/lib/check_mk_agent/plugins$ ./ping.py
+# <<<ping>>>
+# 127.0.0.1 = up!
+# 10.0.4.14 = up!
+# 192.168.57.10 = up!
+# ::1 = up!
+# dr88::e33:88uu:fg34:azb7%bfg3b3 = up!
+# dr88::e33:88uu:ft50:mb77%bfg3b8 = up!
+$ check_mk_agent | less # In order to locate the above result, type :/ping (just like in Vim) or use other CLI commands e.g. grep
+```
+
+The next step will be to [declare the section](https://docs.checkmk.com/latest/en/devel_check_plugins.html#_declaring_the_section) and for Checkmk to know that the new check exists, it must be [registered](https://docs.checkmk.com/latest/en/devel_check_plugins.html#_registering_the_check).
 
 ## License
 
