@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
         apt -y upgrade
         apt -y autoremove
         apt clean
-        apt -y install net-tools git zsh
+        apt -y install net-tools git zsh python3-pip
     SHELL
     config.vm.provision :shell, privileged: false, inline: "git clone https://github.com/ohmyzsh/ohmyzsh.git ~/.oh-my-zsh"
     config.vm.provision :shell, privileged: false, inline: "cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc"
