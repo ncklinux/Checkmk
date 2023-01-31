@@ -233,7 +233,7 @@ Visit the new monitoring UI at [http://192.168.57.10/anothermonitoring/](http://
 
 ## Plugins
 
-Checkmk offers many ready-made plugins (2000 more or less) for most hardware and software. You can find them on [Checkmk Exchange](https://exchange.checkmk.com/), where there are even more plugins contributed by users.
+Checkmk offers many ready-made plugins (2000 more or less) for most hardware and software. You can find them on [Checkmk Exchange](https://exchange.checkmk.com/), where there are even more plugins contributed by users. I've made an example of an object-oriented plugin in Python, which can be found in the [plugins directory](https://github.com/ncklinux/Checkmk/tree/main/plugins) of this project.
 
 ```bash
 $ git clone git@github.com:ncklinux/Checkmk.git
@@ -242,7 +242,8 @@ $ vagrant up master
 $ vagrant scp plugins/ping.py master:/usr/lib/check_mk_agent/plugins
 $ vagrant ssh master
 $ chmod +x /usr/lib/check_mk_agent/plugins/ping.py
-$ cd /usr/lib/check_mk_agent/plugins
+$ sudo omd su mymonitoring
+$ cd /usr/lib/check_mk_agent/plugins/ && ls -la
 $ ./ping.py
 # OMD[mymonitoring]:/usr/lib/check_mk_agent/plugins$ ./ping.py
 # <<<ping>>>
