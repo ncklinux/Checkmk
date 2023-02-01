@@ -233,30 +233,28 @@ Visit the new monitoring UI at [http://192.168.57.10/anothermonitoring/](http://
 
 ## Plugins
 
-Checkmk offers many ready-made plugins (2000 more or less) for most hardware and software. You can find them on [Checkmk Exchange](https://exchange.checkmk.com/), where there are even more plugins contributed by users. I've made an example of an object-oriented plugin in Python, which can be found in the [plugins directory](https://github.com/ncklinux/Checkmk/tree/main/plugins) of this project.
+Checkmk offers many ready-made plugins (2000 more or less) for most hardware and software. You can find them on [Checkmk Exchange](https://exchange.checkmk.com/), where there are even more plugins contributed by users. I've made an example plugin, in Shell for node (the host) and in Python for the master (checkmk server), which can be found in the [plugins directory](https://github.com/ncklinux/Checkmk/tree/main/plugins) of this project.
 
 ```bash
 $ git clone git@github.com:ncklinux/Checkmk.git
 $ cd Checkmk
 $ vagrant up master
-$ vagrant scp plugins/ping.py master:/usr/lib/check_mk_agent/plugins
+$ vagrant scp plugins/node/linux_ips.sh master:/usr/lib/check_mk_agent/plugins
 $ vagrant ssh master
-$ sudo chmod +x /usr/lib/check_mk_agent/plugins/ping.py
-$ sudo omd su mymonitoring
-$ cd /usr/lib/check_mk_agent/plugins/ && ls -la
-$ ./ping.py
-# OMD[mymonitoring]:/usr/lib/check_mk_agent/plugins$ ./ping.py
-# <<<ping>>>
-# 127.0.0.1 = up!
-# 10.0.4.14 = up!
-# 192.168.57.10 = up!
-# ::1 = up!
-# dr88::e33:88uu:fg34:azb7%bfg3b3 = up!
-# dr88::e33:88uu:ft50:mb77%bfg3b8 = up!
-$ check_mk_agent | less # In order to locate the above result, type :/ping (just like in Vim) or use other CLI commands e.g. grep
+$ sudo chmod +x /usr/lib/check_mk_agent/plugins/linux_ips.sh
+$ cd /usr/lib/check_mk_agent/plugins/
+$ ./linux_ips.sh
 ```
 
-The next step will be to [declare the section](https://docs.checkmk.com/latest/en/devel_check_plugins.html#_declaring_the_section) and for Checkmk to know that the new check exists, it must be [registered](https://docs.checkmk.com/latest/en/devel_check_plugins.html#_registering_the_check).
+Let's create our check Python plugin in `/omd/sites/mymonitoring/local/lib/check_mk/base/plugins/agent_based` directory.
+
+```bash
+$ sudo omd su mymonitoring
+$ cd /omd/sites/mymonitoring/local/lib/check_mk/base/plugins/agent_based && ls -la
+$ vim linux_ips.py
+```
+
+Type `i` and paste the contents with `Ctrl+Shift+v` of the file [linux_ips.py](https://github.com/ncklinux/Checkmk/tree/main/plugins/master/linux_ips.py), press `Esc` and type `:wq` to write (save) and quit the file (the above example has not been tested yet, according to the [documentation](https://docs.checkmk.com/latest/en/devel_check_plugins.html) should work, try it). In the UI click on "Host" and then "Service Configuration" and you should be able to see the service "IPs" under "Undecided services - currently not monitored", the UI will let you know if there are any errors with it. For debugging use the following `cmk -vv --debug --checks IPs <hostname>`.
 
 ## License
 
