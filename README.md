@@ -239,14 +239,18 @@ Checkmk offers many ready-made plugins (2000 more or less) for most hardware and
 $ git clone git@github.com:ncklinux/Checkmk.git
 $ cd Checkmk
 $ vagrant up master
-$ vagrant scp plugins/node/linux_ips.sh master:/usr/lib/check_mk_agent/plugins
+$ vagrant scp plugins/node/linux_ips master:/usr/lib/check_mk_agent/plugins
 $ vagrant ssh master
-$ sudo chmod +x /usr/lib/check_mk_agent/plugins/linux_ips.sh
-$ cd /usr/lib/check_mk_agent/plugins/
-$ ./linux_ips.sh
+$ sudo chmod +x /usr/lib/check_mk_agent/plugins/linux_ips
+$ cd /usr/lib/check_mk_agent/plugins/ && ls -la
+
+# Try out the plug-in
+$ /usr/lib/check_mk_agent/plugins/linux_ips
+# <<<linux_ips.py>>>
+# 192.168.57.10
 ```
 
-Let's create our check Python plugin in `/omd/sites/mymonitoring/local/lib/check_mk/base/plugins/agent_based` directory.
+Let's create our check Python file in `/omd/sites/mymonitoring/local/lib/check_mk/base/plugins/agent_based` directory.
 
 ```bash
 $ sudo omd su mymonitoring
