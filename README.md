@@ -238,23 +238,38 @@ Checkmk offers many ready-made plugins (2000 more or less) for most hardware and
 ```bash
 $ git clone git@github.com:ncklinux/Checkmk.git
 $ cd Checkmk
-$ vagrant up master
-$ vagrant scp plugins/node/linux_ips.sh master:/usr/lib/check_mk_agent/plugins
-$ vagrant ssh master
-$ sudo chmod +x /usr/lib/check_mk_agent/plugins/linux_ips.sh
-$ cd /usr/lib/check_mk_agent/plugins/
-$ ./linux_ips.sh
+$ vagrant up
+$ vagrant scp plugins/node/linux_ips master:/usr/lib/check_mk_agent/plugins
+$ vagrant ssh node # You can do all these steps for the master as well
+$ sudo chmod +x /usr/lib/check_mk_agent/plugins/linux_ips
+$ cd /usr/lib/check_mk_agent/plugins/ && ls -la
+
+# Try out the plug-in
+$ /usr/lib/check_mk_agent/plugins/linux_ips
+# <<<linux_ips.py>>>
+# 192.168.57.10
+$ check_mk_agent
+# ...
+# <<<linux_ips>>>
+# 192.168.57.11
+$ cmk -d master | grep -A5 '^<<<linux_ips'
+# <<<linux_ips>>>
+# 192.168.57.11
 ```
 
-Let's create our check Python plugin in `/omd/sites/mymonitoring/local/lib/check_mk/base/plugins/agent_based` directory.
+Let's create our check Python plugin in `/omd/sites/mymonitoring/local/lib/check_mk/base/plugins/agent_based` directory (to teach Checkmk how to handle the information and the new agent section).
 
 ```bash
+# The following steps apply only to the master
+$ vagrant ssh master
 $ sudo omd su mymonitoring
 $ cd /omd/sites/mymonitoring/local/lib/check_mk/base/plugins/agent_based && ls -la
 $ vim linux_ips.py
 ```
 
-Type `i` and paste the contents with `Ctrl+Shift+v` of the file [linux_ips.py](https://github.com/ncklinux/Checkmk/tree/main/plugins/master/linux_ips.py), press `Esc` and type `:wq` to write (save) and quit the file (the above example has not been tested yet, according to the [documentation](https://docs.checkmk.com/latest/en/devel_check_plugins.html) should work, try it). In the UI click on "Host" and then "Service Configuration" and you should be able to see the service "IPs" under "Undecided services - currently not monitored", the UI will let you know if there are any errors with it. For debugging use the following `cmk -vv --debug --checks IPs <hostname>`.
+Type `i` and paste the contents with `Ctrl+Shift+v` of the file [linux_ips.py](https://github.com/ncklinux/Checkmk/tree/main/plugins/master/linux_ips.py), press `Esc` and type `:wq` to write (save) and quit the file, you should now be able to see the service "IPs" under "Undecided services - currently not monitored", the UI will let you know if there are any errors with it. For debugging use the following `cmk --debug --cache -vvI <hostname>` check the [docs](https://docs.checkmk.com/latest/en/cmk_commandline.html#options).
+
+![Screenshot](./misc/screenshots/check_row.png)
 
 ## License
 

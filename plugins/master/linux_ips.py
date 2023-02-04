@@ -9,10 +9,12 @@ def discover_linux_ips(section):
 
 def ping_linux_ips(section):
     for ip in section:
-        if os.system("ping -4 -c 1 " + ip + " > /dev/null 2>&1") == 0:
+        if os.system("ping -4 -c 1 " + ip[0] + " > /dev/null 2>&1") == 0:
             yield Result(state=State.OK, summary="IP up!")
+            return
         else:
             yield Result(state=State.CRIT, summary="IP down!")
+            return
 
 
 register.check_plugin(
