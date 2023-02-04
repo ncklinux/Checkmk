@@ -248,9 +248,16 @@ $ cd /usr/lib/check_mk_agent/plugins/ && ls -la
 $ /usr/lib/check_mk_agent/plugins/linux_ips
 # <<<linux_ips.py>>>
 # 192.168.57.10
+$ check_mk_agent
+# ...
+# <<<linux_ips>>>
+# 192.168.57.10
+$ cmk -d master | grep -A5 '^<<<linux_ips'
+# <<<linux_ips>>>
+# 192.168.57.10
 ```
 
-Let's create our check Python file in `/omd/sites/mymonitoring/local/lib/check_mk/base/plugins/agent_based` directory.
+Let's create our check Python plugin in `/omd/sites/mymonitoring/local/lib/check_mk/base/plugins/agent_based` directory (to teach Checkmk how to handle the information and the new agent section).
 
 ```bash
 $ sudo omd su mymonitoring
