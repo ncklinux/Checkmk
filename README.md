@@ -129,7 +129,7 @@ $ omd sites
 # mymonitoring     2.1.0p18.cfe     default version
 
 # Man page ;)
-man omd
+$ man omd
 # OMD(8) System Manager's Manual OMD(8)
 #
 # NAME
@@ -216,6 +216,7 @@ $ omd versions # Show all versions (the character p in the version stands for pa
 $ omd sites # To see which version each site is using
 $ omd status mymonitoring
 $ omd stop mymonitoring
+$ omd backup /tmp/mymonitoring_20240413.tar.gz
 $ omd update mymonitoring
 $ omd start mymonitoring
 ```
@@ -225,11 +226,19 @@ Run multiple versions in parallel! This is actually very useful if you want to r
 ```bash
 $ omd create anothermonitoring
 $ omd su anothermonitoring
-$ htpasswd etc/htpasswd cmkadmin # change the password
+$ htpasswd ~/etc/htpasswd cmkadmin # change the password
+$ cmk-passwd cmkadmin # build-in way to change the password
 $ omd start anothermonitoring
 ```
 
 Visit the new monitoring UI at [http://192.168.57.10/anothermonitoring/](http://192.168.57.10/anothermonitoring/)
+
+## Tips & Tricks
+
+- Specify desired version when updating `omd -f -V 2.2.0p1.cee update --conflict=install anothermonitoring`
+- After update, fix Apache error message in case Apache is not started `omd update-apache-config anothermonitoring`
+- Remove site `omd rm anothermonitoring`
+- Restore from backup `omd restore /tmp/mymonitoring_20240413.tar.gz`
 
 ## Plugins
 
